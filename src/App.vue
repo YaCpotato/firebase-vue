@@ -1,19 +1,32 @@
 <template>
   <div id="app">
-    <h2>タスク</h2>
-    <div>
-      <input type="text" v-model="newTodoName">
-      <button type="submit" v-on:click="createTodo()">タスク作成</button>
+    <div class="container is-fluid">
+      <div class="control">
+        <input class="input is-primary" type="text" v-model="newTodoName">
+        <button type="submit" v-on:click="createTodo()" class="button is-primary">タスク作成</button>
+      </div>
     </div>
-    <ul v-for="(todo,key) in filteredTodos" :key="key">
-      <li><input class="toggle" type="checkbox" v-model="todo.isComplete" v-on:click="updateIsCompleteTodo(todo, key)">{{ todo.name }}</li>
-      <button type="submit" v-on:click="deleteTodo(key)">削除</button>
-    </ul>
+
+    <div class="table-container">
+      <table class="table is-striped">
+        <thead>
+          <th></th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr v-for="(todo,key) in todos" :key="key">
+            <td> {{ todo.name }} </td>
+            <td> <button type="submit" v-on:click="deleteTodo(key)">削除</button> </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
   </div>
 </template>
 
 <script>
 import firebase from 'firebase'
+import 'bulma'
 
 export default {
   name: 'App',
@@ -22,7 +35,6 @@ export default {
       database: null,
       todosRef: null,
       newTodoName: '',
-      showTodoType: 'all',
       todos: []
     }
   },
@@ -35,6 +47,7 @@ export default {
       _this.todos = snapshot.val(); // データに変化が起きたときに再取得する
     });
   },
+  
   methods: {
     createTodo: function() {
       if (this.newTodoName == "") { return; }
@@ -43,6 +56,9 @@ export default {
         isComplete: false,
       })
       this.newTodoName = "";
+    },
+    deleteTodo: function (key) {
+      this.database.ref('todos').child(key).remove();
     },
   },
 }
