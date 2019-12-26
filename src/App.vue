@@ -9,7 +9,28 @@
   <div class="container">
     <ul>
       <draggable tag="ul">
-        <li v-for="(todo,key) in queuedTodos" :key="key">{{ todo.name }}</li>
+        <div class="card" v-for="(todo,key) in queuedTodos" :key="key">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{ todo.name }}
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </a>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              内容
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Save</a>
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Delete</a>
+          </footer>
+        </div>
       </draggable>
     </ul>
   </div>
@@ -33,7 +54,6 @@
               <option value=3>Finish</option>
             </select>
           </div>
-          {{ newTodoPhase }}
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -65,21 +85,38 @@ export default {
       queuedTodos: [],
       openedTodos: [],
       WiPTodos: [],
-      doneTodos: []
+      doneTodos: [],
+      queuedTodosRef: null,
+      openedTodosRef: null,
+      WiPTodosRef: null,
+      doneTodosRef: null
     }
   },
   created: function() {
     this.database = firebase.database();
-    this.todosRef = this.database.ref('todos');
     var _this = this;
-    this.todosRef.on('value', function(snapshot) {
+
+    this.queuedTodosRef = this.database.ref('todos')
+    this.queuedTodosRef.on('value', function(snapshot) {
       _this.queuedTodos = snapshot.val();
+    }).orderByChild('phase').startAt(0).endAt(0);
+
+    this.openedTodosRef = this.database.ref('todos').orderByChild('phase').startAt(1).endAt(1);
+    this.openedTodosRef.on('value', function(snapshot) {
+      _this.openedTodos = snapshot.val();
+    });
+
+    this.WiPTodosRef = this.database.ref('todos').orderByChild('phase').startAt(2).endAt(2);
+    this.WiPTodosRef.on('value', function(snapshot) {
+      _this.WiPTodos = snapshot.val();
+    });
+
+    this.doneTodosRef = this.database.ref('todos').orderByChild('phase').startAt(2).endAt(2);
+    this.doneTodosRef.on('value', function(snapshot) {
+      _this.doneTodos = snapshot.val();
     });
   },
   methods: {
-    deleteTodo: function (key) {
-      this.database.ref('queuedTodos').child(key).remove();
-    },
     activeTaskModal: function(){
       $("div.modal").addClass("is-active");
     },
@@ -108,6 +145,10 @@ export default {
   text-align center
   color #2c3e50
   margin-top 60px
+  .container
+    .card
+      width:20%
+      border-color: black
   .modal
     .button
       width: 5%
