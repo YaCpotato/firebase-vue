@@ -6,34 +6,79 @@
       </div>
     </div>
 
-  <div class="container">
-    <ul>
-      <draggable tag="ul">
-        <div class="card" v-for="(todo,key) in queuedTodos" :key="key">
-          <header class="card-header">
-            <p class="card-header-title">
-              {{ todo.name }}
-            </p>
-            <a href="#" class="card-header-icon" aria-label="more options">
-              <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </a>
-          </header>
-          <div class="card-content">
-            <div class="content">
-              内容
+  <div class="container columns">
+      <div class="column">
+        <draggable tag="ul">
+          <div class="card" v-for="(todo,key) in queuedTodos" :key="key">
+            <header class="card-header">
+            </header>
+            <div class="card-content">
+              <div class="content">
+                {{ todo.name }}
+              </div>
             </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item">Save</a>
+              <a href="#" class="card-footer-item">Edit</a>
+              <a href="#" class="card-footer-item">Delete</a>
+            </footer>
           </div>
-          <footer class="card-footer">
-            <a href="#" class="card-footer-item">Save</a>
-            <a href="#" class="card-footer-item">Edit</a>
-            <a href="#" class="card-footer-item">Delete</a>
-          </footer>
-        </div>
-      </draggable>
-    </ul>
-  </div>
+        </draggable>
+      </div>
+      <div class="column">
+        <draggable tag="ul">
+          <div class="card" v-for="(todo,key) in openedTodos" :key="key">
+            <header class="card-header">
+            </header>
+            <div class="card-content">
+              <div class="content">
+                {{ todo.name }}
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item">Save</a>
+              <a href="#" class="card-footer-item">Edit</a>
+              <a href="#" class="card-footer-item">Delete</a>
+            </footer>
+          </div>
+        </draggable>
+      </div>
+      <div class="column">
+          <draggable tag="ul">
+          <div class="card" v-for="(todo,key) in WiPTodos" :key="key">
+            <header class="card-header">
+            </header>
+            <div class="card-content">
+              <div class="content">
+                {{ todo.name }}
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item">Save</a>
+              <a href="#" class="card-footer-item">Edit</a>
+              <a href="#" class="card-footer-item">Delete</a>
+            </footer>
+          </div>
+        </draggable>
+      </div>
+      <div class="column">
+          <draggable tag="ul">
+          <div class="card" v-for="(todo,key) in doneTodos" :key="key">
+            <header class="card-header">
+            </header>
+            <div class="card-content">
+              <div class="content">
+                {{ todo.name }}
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a href="#" class="card-footer-item">Save</a>
+              <a href="#" class="card-footer-item">Edit</a>
+              <a href="#" class="card-footer-item">Delete</a>
+            </footer>
+          </div>
+        </draggable>
+      </div>
   <div class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
@@ -46,14 +91,14 @@
         <input class="input is-primary is-small" type="text" v-model="newTodoName">
         <div class="control">
           <label>Phase</label>
-          <div class="select is-multiple">
-            <select multiple size="4" name="newTodoPhase">
-              <option value=0>Queued</option>
-              <option value=1>Open</option>
-              <option value=2>WiP</option>
-              <option value=3>Finish</option>
-            </select>
-          </div>
+          <label for="queue">Queue</label>
+          <input type="radio" id="queue" value='q' v-model="newTodoPhase">
+          <label for="open">Open</label>
+          <input type="radio" id="open" value='o' v-model="newTodoPhase">
+          <label for="wip">WiP</label>
+          <input type="radio" id="wip" value='w' v-model="newTodoPhase">
+          <label for="done">Done</label>
+          <input type="radio" id="done" value='d' v-model="newTodoPhase">
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -61,6 +106,7 @@
         <button class="button" v-on:click="deactiveTaskModal(0)">Cancel</button>
       </footer>
     </div>
+  </div>
   </div>
   </div>
 </template>
@@ -96,23 +142,24 @@ export default {
     this.database = firebase.database();
     var _this = this;
 
-    this.queuedTodosRef = this.database.ref('todos')
-    this.queuedTodosRef.on('value', function(snapshot) {
+    this.todosRef = this.database.ref('todos')
+    this.queuedTodos = this.database.ref('todos').orderByChild('phase').startAt('q').endAt('q');
+    this.queuedTodos.on('value', function(snapshot) {
       _this.queuedTodos = snapshot.val();
-    }).orderByChild('phase').startAt(0).endAt(0);
+    });
 
-    this.openedTodosRef = this.database.ref('todos').orderByChild('phase').startAt(1).endAt(1);
-    this.openedTodosRef.on('value', function(snapshot) {
+    this.openedTodos = this.database.ref('todos').orderByChild('phase').startAt('o').endAt('o');
+    this.openedTodos.on('value', function(snapshot) {
       _this.openedTodos = snapshot.val();
     });
 
-    this.WiPTodosRef = this.database.ref('todos').orderByChild('phase').startAt(2).endAt(2);
-    this.WiPTodosRef.on('value', function(snapshot) {
+    this.WiPTodos = this.database.ref('todos').orderByChild('phase').startAt('w').endAt('w');
+    this.WiPTodos.on('value', function(snapshot) {
       _this.WiPTodos = snapshot.val();
     });
 
-    this.doneTodosRef = this.database.ref('todos').orderByChild('phase').startAt(2).endAt(2);
-    this.doneTodosRef.on('value', function(snapshot) {
+    this.doneTodos = this.database.ref('todos').orderByChild('phase').startAt('d').endAt('d');
+    this.doneTodos.on('value', function(snapshot) {
       _this.doneTodos = snapshot.val();
     });
   },
@@ -121,17 +168,16 @@ export default {
       $("div.modal").addClass("is-active");
     },
     deactiveTaskModal: function(mode){
-      if(mode === 0){
-        $("div.modal").removeClass("is-active");
-      }else{
-        if (this.newTodoName == "") { return; }
-          this.queuedTodosRef.push({
+      if(mode != 0){
+        if (this.newTodoName === "" || this.newTodoPhase === "" ) { return; }
+          this.todosRef.push({
             name: this.newTodoName,
             phase: this.newTodoPhase
           })
           this.newTodoName = "";
-        $("div.modal").removeClass("is-active");
+          this.newTodoPhase = 'q';
       }
+      $("div.modal").removeClass("is-active");
     },
   }
 }
@@ -146,9 +192,11 @@ export default {
   color #2c3e50
   margin-top 60px
   .container
-    .card
-      width:20%
-      border-color: black
+    .column
+      .card
+        margin: 10px
+        .card-content
+          width:20%
   .modal
     .button
       width: 5%
