@@ -73,9 +73,9 @@
               </div>
             </div>
             <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><span class="glyphicon glyphicon-chevron-left"></span></span>
+              <span class="card-footer-item">Delete</span>
               <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"></span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
             </footer>
           </div>
         </draggable>
@@ -89,9 +89,9 @@
               </div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Save</a>
-              <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a>
+              <span class="card-footer-item" v-on:click="backPhase(todo,key)">←</span>
+              <span class="card-footer-item">Edit</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
             </footer>
           </div>
         </draggable>
@@ -105,9 +105,9 @@
               </div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Save</a>
-              <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a>
+              <span class="card-footer-item" v-on:click="backPhase(todo,key)">←</span>
+              <span class="card-footer-item">Edit</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
             </footer>
           </div>
         </draggable>
@@ -121,9 +121,10 @@
               </div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Save</a>
-              <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a>
+              <span class="card-footer-item" v-on:click="backPhase(todo,key)">←</span>
+              <span class="card-footer-item">Complete</span>
+              <span class="card-footer-item">Edit</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
             </footer>
           </div>
         </draggable>
