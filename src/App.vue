@@ -73,9 +73,9 @@
               </div>
             </div>
             <footer class="card-footer">
-              <a href="#" class="card-footer-item">Save</a>
-              <a href="#" class="card-footer-item">Edit</a>
-              <a href="#" class="card-footer-item">Delete</a>
+              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><span class="glyphicon glyphicon-chevron-left"></span></span>
+              <span class="card-footer-item">Edit</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"></span>
             </footer>
           </div>
         </draggable>
@@ -235,6 +235,34 @@ export default {
           this.newTodoPhase = 'q';
       }
       $("div.modal").removeClass("is-active");
+    },
+    backPhase: function(todo,key){
+      if(todo.phase === 'd'){
+        todo.phase = 'w'
+      }else if(todo.phase === 'w'){
+        todo.phase = 'o'
+      }else if(todo.phase === 'o'){
+        todo.phase = 'q'
+      }else if(todo.phase === 'q'){
+        alert('rejected')
+      }
+      var updates = {};
+      updates['/todos/' + key] = todo;
+      this.database.ref().update(updates);
+    },
+    advancePhase: function(todo,key){
+      if(todo.phase === 'q'){
+        todo.phase = 'o'
+      }else if(todo.phase === 'o'){
+        todo.phase = 'w'
+      }else if(todo.phase === 'w'){
+        todo.phase = 'd'
+      }else if(todo.phase === 'd'){
+        alert('completed')
+      }
+      var updates = {};
+      updates['/todos/' + key] = todo;
+      this.database.ref().update(updates);
     },
   }
 }
