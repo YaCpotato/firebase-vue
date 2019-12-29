@@ -73,9 +73,9 @@
               </div>
             </div>
             <footer class="card-footer">
-              <span class="card-footer-item">Delete</span>
+              <span class="card-footer-item" v-on:click="deleteTodo(todo,key)"><font-awesome-icon icon="trash-alt" /></span>
               <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
             </footer>
           </div>
         </draggable>
@@ -89,9 +89,9 @@
               </div>
             </div>
             <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="backPhase(todo,key)">←</span>
+              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><font-awesome-icon icon="angle-left" /></span>
               <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
             </footer>
           </div>
         </draggable>
@@ -105,9 +105,9 @@
               </div>
             </div>
             <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="backPhase(todo,key)">←</span>
+              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><font-awesome-icon icon="angle-left" /></span>
               <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
             </footer>
           </div>
         </draggable>
@@ -121,10 +121,10 @@
               </div>
             </div>
             <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="backPhase(todo,key)">←</span>
+              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><font-awesome-icon icon="angle-left" /></span>
               <span class="card-footer-item">Complete</span>
               <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)">→</span>
+              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
             </footer>
           </div>
         </draggable>
@@ -222,6 +222,9 @@ export default {
     });
   },
   methods: {
+    deleteTodo: function(todo,key){
+            this.database.ref('todos').child(key).remove();
+        },
     activeTaskModal: function(){
       $("div.modal").addClass("is-active");
     },
