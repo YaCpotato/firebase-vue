@@ -1,14 +1,14 @@
 <template>
     <div class="container">
         <draggable tag="ul">
-            <div class="card" v-for="(todo,key) in queuedTodos" :key="key">
+            <div class="card" v-for="(todo,key) in WiPTodos" :key="key">
                 <div class="card-content">
                     <div class="content">
                         {{ todo.name }}
                     </div>
                 </div>
                 <footer class="card-footer">
-                    <span class="card-footer-item" v-on:click="deleteTodo(todo,key)"><font-awesome-icon icon="coffee" /></span>
+                    <span class="card-footer-item" v-on:click="backPhase(todo,key)"><font-awesome-icon icon="angle-left" /></span>
                     <span class="card-footer-item">Delete</span>
                     <span class="card-footer-item">Edit</span>
                     <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
@@ -25,7 +25,7 @@ export default{
         draggable
     },
     props:{
-        queuedTodos:{
+        WiPTodos:{
             name:String,
             phase:String
         }
@@ -34,8 +34,14 @@ export default{
         deleteTodo: function(todo,key){
             this.database.ref('todos').child(key).remove();
         },
+        backPhase: function(todo,key){
+            todo.phase = 'o'
+            var updates = {};
+            updates['/todos/' + key] = todo;
+            this.database.ref().update(updates);
+        },
         advancePhase: function(todo,key){
-            todo.phase === 'o'
+            todo.phase === 'd'
             var updates = {};
             updates['/todos/' + key] = todo;
             this.database.ref().update(updates);

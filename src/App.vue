@@ -65,69 +65,16 @@
 
   <div class="container columns">
       <div class="column">
-        <draggable tag="ul">
-          <div class="card" v-for="(todo,key) in queuedTodos" :key="key">
-            <div class="card-content">
-              <div class="content">
-                {{ todo.name }}
-              </div>
-            </div>
-            <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="deleteTodo(todo,key)"><font-awesome-icon icon="trash-alt" /></span>
-              <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
-            </footer>
-          </div>
-        </draggable>
+        <QueuedLane />
       </div>
       <div class="column">
-        <draggable tag="ul">
-          <div class="card" v-for="(todo,key) in openedTodos" :key="key">
-            <div class="card-content">
-              <div class="content">
-                {{ todo.name }}
-              </div>
-            </div>
-            <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><font-awesome-icon icon="angle-left" /></span>
-              <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
-            </footer>
-          </div>
-        </draggable>
+        <OpenedLane />
       </div>
       <div class="column">
-          <draggable tag="ul">
-          <div class="card" v-for="(todo,key) in WiPTodos" :key="key">
-            <div class="card-content">
-              <div class="content">
-                {{ todo.name }}
-              </div>
-            </div>
-            <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><font-awesome-icon icon="angle-left" /></span>
-              <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
-            </footer>
-          </div>
-        </draggable>
+        <WiPLane />
       </div>
       <div class="column">
-          <draggable tag="ul">
-          <div class="card" v-for="(todo,key) in doneTodos" :key="key">
-            <div class="card-content">
-              <div class="content">
-                {{ todo.name }}
-              </div>
-            </div>
-            <footer class="card-footer">
-              <span class="card-footer-item" v-on:click="backPhase(todo,key)"><font-awesome-icon icon="angle-left" /></span>
-              <span class="card-footer-item">Complete</span>
-              <span class="card-footer-item">Edit</span>
-              <span class="card-footer-item" v-on:click="advancePhase(todo,key)"><font-awesome-icon icon="angle-right" /></span>
-            </footer>
-          </div>
-        </draggable>
+        <DoneLane />
       </div>
   <div class="modal">
     <div class="modal-background"></div>
@@ -173,12 +120,18 @@
 import firebase from 'firebase'
 import 'bulma'
 import $ from 'jquery'
-import draggable from 'vuedraggable'
+import QueuedLane from './components/QueuedLane'
+import OpenedLane from './components/OpenedLane'
+import WiPLane from './components/WiPLane'
+import DoneLane from './components/DoneLane'
 
 export default {
   name: 'App',
   components: {
-    draggable
+    QueuedLane,
+    OpenedLane,
+    WiPLane,
+    DoneLane
   },
   data () {
     return {
@@ -224,7 +177,7 @@ export default {
   methods: {
     deleteTodo: function(todo,key){
             this.database.ref('todos').child(key).remove();
-        },
+    },
     activeTaskModal: function(){
       $("div.modal").addClass("is-active");
     },
