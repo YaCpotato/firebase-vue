@@ -1,7 +1,7 @@
 <template>
-<section class="hero is-success is-fullheight">
+<section class="hero is-fullheight">
   <!-- Hero head: will stick at the top -->
-  <div class="hero-head">
+  <div class="hero-head has-background-primary">
     <header class="navbar">
       <div class="container">
         <div class="navbar-brand">
@@ -42,10 +42,7 @@
   <!-- Hero content: will be in the middle -->
   <div class="hero-body">
     <div class="container has-text-centered">
-      <h1 class="title">
-        Project管理
-      </h1>
-      <nav class="tabs is-boxed is-fullwidth">
+      <nav class="tabs  is-primary is-fullwidth">
       <div class="container">
         <ul>
           <li class="is-active"><a>Zenhub的なやつ</a></li>
@@ -65,6 +62,9 @@
 
   <div class="container columns">
       <div class="column">
+        <div class="container has-background-link">
+          Queue
+        </div>
         <draggable tag="ul">
           <div class="card" v-for="(todo,key) in queuedTodos" :key="key">
             <div class="card-content">
@@ -81,6 +81,9 @@
         </draggable>
       </div>
       <div class="column">
+        <div class="container has-background-info">
+          Open
+        </div>
         <draggable tag="ul">
           <div class="card" v-for="(todo,key) in openedTodos" :key="key">
             <div class="card-content">
@@ -97,6 +100,9 @@
         </draggable>
       </div>
       <div class="column">
+        <div class="container has-background-primary">
+          WiP
+        </div>
           <draggable tag="ul">
           <div class="card" v-for="(todo,key) in WiPTodos" :key="key">
             <div class="card-content">
@@ -113,6 +119,9 @@
         </draggable>
       </div>
       <div class="column">
+        <div class="container has-background-success">
+          Done
+        </div>
           <draggable tag="ul">
           <div class="card" v-for="(todo,key) in doneTodos" :key="key">
             <div class="card-content">
