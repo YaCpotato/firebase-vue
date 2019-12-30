@@ -1,72 +1,21 @@
 <template>
-<section class="hero is-fullheight">
-  <!-- Hero head: will stick at the top -->
-  <div class="hero-head has-background-primary">
-    <header class="navbar">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="navbar-item">
-            <img src="https://bulma.io/images/bulma-type-white.png" alt="Logo">
-          </a>
-          <span class="navbar-burger burger" data-target="navbarMenuHeroC">
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </div>
-        <div id="navbarMenuHeroC" class="navbar-menu">
-          <div class="navbar-end">
-            <a class="navbar-item is-active">
-              Home
-            </a>
-            <a class="navbar-item">
-              Examples
-            </a>
-            <a class="navbar-item">
-              Documentation
-            </a>
-            <span class="navbar-item">
-              <a class="button is-success is-inverted">
-                <span class="icon">
-                  <i class="fab fa-github"></i>
-                </span>
-                <span>Download</span>
-              </a>
-            </span>
-          </div>
-        </div>
-      </div>
-    </header>
-  </div>
-
-  <!-- Hero content: will be in the middle -->
-  <div class="hero-body">
-    <div class="container has-text-centered">
-      <nav class="tabs  is-primary is-fullwidth">
-      <div class="container">
-        <ul>
-          <li class="is-active"><a>Zenhub的なやつ</a></li>
-          <li><a>Twitterからインポート</a></li>
-          <li><a>タスク一括管理</a></li>
-          <li><a>スケジュール管理</a></li>
-          <li><a>本管理</a></li>
-        </ul>
-      </div>
-    </nav>
-      <div id="app">
-    <div class="container is-fluid">
+<div id="app">
+  <Header />
+    <div class="container">
       <div class="control">
-        <button type="button ope-button" v-on:click="activeTaskModal()" class="button is-primary is-small modal-button" aria-haspopup="true">タスク作成</button>
+        <button type="button ope-button" v-on:click="activeTaskModal()" class="button is-primary is-medium modal-button" aria-haspopup="true">タスク作成</button>
       </div>
     </div>
-
-  <div class="container columns">
+    <div class="container columns">
       <div class="column">
-        <div class="container has-background-link">
+        <div class="container container-header has-background-link">
           Queue
         </div>
         <draggable tag="ul">
           <div class="card" v-for="(todo,key) in queuedTodos" :key="key">
+            <header class="card-header queue-card">
+              <br>
+            </header>
             <div class="card-content">
               <div class="content">
                 {{ todo.name }}
@@ -81,11 +30,14 @@
         </draggable>
       </div>
       <div class="column">
-        <div class="container has-background-info">
+        <div class="container container-header has-background-info">
           Open
         </div>
         <draggable tag="ul">
           <div class="card" v-for="(todo,key) in openedTodos" :key="key">
+            <header class="card-header open-card">
+              <br>
+            </header>
             <div class="card-content">
               <div class="content">
                 {{ todo.name }}
@@ -100,11 +52,14 @@
         </draggable>
       </div>
       <div class="column">
-        <div class="container has-background-primary">
+        <div class="container container-header has-background-primary">
           WiP
         </div>
           <draggable tag="ul">
           <div class="card" v-for="(todo,key) in WiPTodos" :key="key">
+            <header class="card-header wip-card">
+              <br>
+            </header>
             <div class="card-content">
               <div class="content">
                 {{ todo.name }}
@@ -119,11 +74,14 @@
         </draggable>
       </div>
       <div class="column">
-        <div class="container has-background-success">
+        <div class="container container-header has-background-success">
           Done
         </div>
           <draggable tag="ul">
           <div class="card" v-for="(todo,key) in doneTodos" :key="key">
+            <header class="card-header done-card">
+              <br>
+            </header>
             <div class="card-content">
               <div class="content">
                 {{ todo.name }}
@@ -138,7 +96,7 @@
           </div>
         </draggable>
       </div>
-  <div class="modal">
+    <div class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -165,17 +123,9 @@
         <button class="button" v-on:click="deactiveTaskModal(0)">Cancel</button>
       </footer>
     </div>
-  </div>
-  </div>
-  </div>
+    </div>
     </div>
   </div>
-
-  <!-- Hero footer: will stick at the bottom -->
-  <div class="hero-foot">
-    
-  </div>
-</section>
 </template>
 
 <script>
@@ -295,9 +245,20 @@ export default {
       border-left: solid 1px #000000
       border-right: solid 1px #000000
       border-collapse: collapse;
+      padding:0px;!important
+      .container-header
+        border: solid 2px #000000
       .card
-        margin: 10px;
+        margin: 1rem;
         .card-content
           width:20%
+        .queue-card
+          background-color: hsl(217, 71%, 53%)
+        .open-card
+          background-color: hsl(204, 86%, 53%)
+        .wip-card
+          background-color: hsl(171, 100%, 41%)
+        .done-card
+          background-color: hsl(141, 71%, 48%)
 
 </style>
