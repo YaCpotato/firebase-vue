@@ -133,6 +133,7 @@ import firebase from 'firebase'
 import 'bulma'
 import $ from 'jquery'
 import draggable from 'vuedraggable'
+import axios from 'axios'
 
 export default {
   name: 'App',
@@ -178,6 +179,32 @@ export default {
     this.doneTodos = this.database.ref('todos').orderByChild('phase').startAt('d').endAt('d');
     this.doneTodos.on('value', function(snapshot) {
       _this.doneTodos = snapshot.val();
+    });
+
+    let data = {
+      "query":"from:Yasshieeee lang:ja",
+      "maxResults": "100",
+      "fromDate":"201912310000", 
+      "toDate":"201912311200"
+    }
+
+    axios
+    .post('https://api.twitter.com/1.1/tweets/search/30day/firebasedev.json',
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'authorization': 'Bearer AAAAAAAAAAAAAAAAAAAAAGSdAQEAAAAA6L%2Bo8gqIv8xl7R6sPkdRHOxYkvw%3D9k7PEstZDqaOiuLbL1pQz4zHjKeN93XI9lh8t2B8FSPPV4xCZq'
+        }
+      }
+      )
+    .then(res => {
+      // eslint-disable-next-line no-console
+      console.log(res)
+    })
+    .catch(error => {
+      // eslint-disable-next-line no-console
+      console.log(error)
     });
   },
   methods: {
